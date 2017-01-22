@@ -22,7 +22,7 @@ def launch():
 
 @ask.intent('StartWorkoutIntent')
 def start_workout_intent():
-    ## DEBUG ONLY
+    # DEBUG ONLY
     print 'starting workout'
 
     with open('defaultWorkouts.json') as fp:
@@ -35,30 +35,67 @@ def start_workout_intent():
                                   repetitions=exercises[0]['repititions'])
 
     session.attributes['workout'] = exercises
-    session.attributes['activity_number'] = 1
+    session.attributes['activity_number'] = 0
+    session.attributes['repitition_count'] = 1
 
     return question(speech_text).reprompt(speech_text)
 
 
 @ask.intent('AMAZON.YesIntent')
+def start_count():
+    speech_text = render_template('startCount')
+    return question(speech_text).reprompt(speech_text)
+
+
 def next_exercise():
     workout = session.attributes.get('workout')
     activity_number = session.attributes.get('activity_number')
-
-    if workout is not None and activity_number is not None:
-        try:
-            exercise = workout[activity_number]
-        except IndexError:
-            speech_text = render_template('completedWorkout')
-            return statement(speech_text)
-        else:
-            speech_text = render_template('nextExercise',
-                                          activity=exercise['activity'],
-                                          repetitions=exercise['repititions'])
-            session.attributes['activity_number'] += 1
-            return question(speech_text).reprompt(speech_text)
-    else:
+    if workout is None or activity_number is None:
         return welcome_and_help()
+
+    activity_number += 1
+
+    try:
+        exercise = workout[activity_number]
+    except IndexError:
+        speech_text = render_template('completedWorkout')
+        return statement(speech_text)
+    else:
+        speech_text = render_template('nextExercise',
+                                      activity=exercise['activity'],
+                                      repetitions=exercise['repititions'])
+        session.attributes['activity_number'] = activity_number
+        return question(speech_text).reprompt(speech_text)
+
+
+@ask.intent('CountWithMeIntent', convert={'number': int})
+def count_with_me_intent(number):
+    # DEBUG ONLY
+    print 'counting... {}'.format(number)
+
+    workout = session.attributes.get('workout')
+    activity_number = session.attributes.get('activity_number')
+    rep_count = session.attributes.get('repitition_count')
+    if rep_count is None or activity_number is None or rep_count is None:
+        return welcome_and_help()
+
+    if number is not None and number == rep_count + 1:
+        number_of_reps = workout[activity_number]['repititions']
+
+        # DEBUG ONLY
+        print number_of_reps
+
+        if number_of_reps - number < 2:
+            session.attributes['repitition_count'] = 1
+            return next_exercise()
+
+        rep_count += 2
+        speech_text = '{}!'.format(rep_count)
+        session.attributes['repitition_count'] = rep_count
+    else:
+        speech_text = '{}!'.format(rep_count)
+
+    return question(speech_text).reprompt(speech_text)
 
 
 @ask.intent('AMAZON.HelpIntent')
@@ -89,8 +126,6 @@ def stop_and_cancel():
 def welcome_and_help():
     speech_text = render_template('welcome')
     return question(speech_text).reprompt(speech_text)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

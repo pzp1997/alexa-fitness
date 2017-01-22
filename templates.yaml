@@ -2,4 +2,5 @@ welcome: Welcome! My name is Alexa, and I will be your personal trainer. To begi
 startWorkout: Let's begin! The first exercise is {{ repetitions }} {{ activity }}. Ready?
 nextExercise: The next exercise is {{ repetitions }} {{ activity }}. Ready?
 completedWorkout: Congratulations! You completed your workout. Keep up the great work!
+startCount: Count with me. 1!
 exit: Goodbye! I hope that you come again soon.
