@@ -47,7 +47,7 @@ def start_count():
     return question(speech_text).reprompt(speech_text)
 
 
-def next_exercise():
+def next_exercise(leftover_speech_response=None):
     workout = session.attributes.get('workout')
     activity_number = session.attributes.get('activity_number')
     if workout is None or activity_number is None:
@@ -64,7 +64,16 @@ def next_exercise():
         speech_text = render_template('nextExercise',
                                       activity=exercise['activity'],
                                       repetitions=exercise['repititions'])
+        if leftover_speech_response:
+            speech_text = render_template('addLeftover',
+                                          leftover=leftover_speech_response,
+                                          original=speech_text)
+
+        # DEBUG ONLY
+        print speech_text
+
         session.attributes['activity_number'] = activity_number
+        session.attributes['repitition_count'] = 1
         return question(speech_text).reprompt(speech_text)
 
 
@@ -80,18 +89,15 @@ def count_with_me_intent(number):
         return welcome_and_help()
 
     if number is not None and number == rep_count + 1:
-        number_of_reps = workout[activity_number]['repititions']
-
-        # DEBUG ONLY
-        print number_of_reps
-
-        if number_of_reps - number < 2:
-            session.attributes['repitition_count'] = 1
-            return next_exercise()
-
         rep_count += 2
         speech_text = '{}!'.format(rep_count)
         session.attributes['repitition_count'] = rep_count
+
+        number_of_reps = workout[activity_number]['repititions']
+        if number_of_reps - number < 2:
+            return (next_exercise()
+                    if number_of_reps == number
+                    else next_exercise(speech_text))
     else:
         speech_text = '{}!'.format(rep_count)
 
