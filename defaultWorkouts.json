@@ -1,0 +1,19 @@
+{
+  "default": {
+    "exercises": [
+      {
+        "exercise": "jumping jacks",
+        "repititions": 20
+      },
+      {
+        "exercise": "push ups",
+        "repititions": 5
+      },
+      {
+        "exercise": "squats",
+        "repititions": 10
+      }
+    ],
+    "duration": 2
+  }
+}
