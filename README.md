@@ -3,10 +3,11 @@
 
 Built during PennApps 2017 Spring in approximately four hours (check the Git commits if you don't believe me :P).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/d93TALLqmsU" frameborder="0" allowfullscreen></iframe>
+### Video Demonstration!
+[![https://youtu.be/d93TALLqmsU](https://i.imgur.com/q28wLsc.jpg)](https://youtu.be/d93TALLqmsU)
 
-<br>
-To run...
+### Instructions
+
 1. Clone this repo and `cd` to into it
 2. Run `python fitness_skill.py`
 3. In another Terminal window, run `ngrok http 5000`
