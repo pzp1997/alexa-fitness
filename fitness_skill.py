@@ -66,9 +66,24 @@ def help_():
     return welcome_and_help()
 
 
+@ask.intent('AMAZON.StopIntent')
+def stop():
+    return stop_and_canel()
+
+
+@ask.intent('AMAZON.CancelIntent')
+def cancel():
+    return stop_and_canel()
+
+
 @ask.session_ended
 def session_ended():
     return '', 200
+
+
+def stop_and_canel():
+    speech_text = render_template('exit')
+    return statement(speech_text)
 
 
 def welcome_and_help():
