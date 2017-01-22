@@ -40,20 +40,7 @@ def start_workout_intent():
     return question(speech_text).reprompt(speech_text)
 
 
-@ask.intent('AMAZON.HelpIntent')
-def help_():
-    return welcome_and_help()
-
-
-@ask.session_ended
-def session_ended():
-    return '', 200
-
-
-def welcome_and_help():
-    speech_text = render_template('welcome')
-    return question(speech_text).reprompt(speech_text)
-
+@ask.intent('AMAZON.YesIntent')
 def next_exercise():
     workout = session.attributes.get('workout')
     activity_number = session.attributes.get('activity_number')
@@ -68,10 +55,27 @@ def next_exercise():
             speech_text = render_template('nextExercise',
                                           activity=exercise['activity'],
                                           repetitions=exercise['repititions'])
+            session.attributes['activity_number'] += 1
             return question(speech_text).reprompt(speech_text)
-
     else:
         return welcome_and_help()
+
+
+@ask.intent('AMAZON.HelpIntent')
+def help_():
+    return welcome_and_help()
+
+
+@ask.session_ended
+def session_ended():
+    return '', 200
+
+
+def welcome_and_help():
+    speech_text = render_template('welcome')
+    return question(speech_text).reprompt(speech_text)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
