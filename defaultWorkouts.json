@@ -2,15 +2,15 @@
   "default": {
     "exercises": [
       {
-        "exercise": "jumping jacks",
+        "activity": "jumping jacks",
         "repititions": 20
       },
       {
-        "exercise": "push ups",
+        "activity": "push ups",
         "repititions": 5
       },
       {
-        "exercise": "squats",
+        "activity": "squats",
         "repititions": 10
       }
     ],
