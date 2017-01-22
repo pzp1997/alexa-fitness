@@ -68,12 +68,12 @@ def help_():
 
 @ask.intent('AMAZON.StopIntent')
 def stop():
-    return stop_and_canel()
+    return stop_and_cancel()
 
 
 @ask.intent('AMAZON.CancelIntent')
 def cancel():
-    return stop_and_canel()
+    return stop_and_cancel()
 
 
 @ask.session_ended
@@ -81,7 +81,7 @@ def session_ended():
     return '', 200
 
 
-def stop_and_canel():
+def stop_and_cancel():
     speech_text = render_template('exit')
     return statement(speech_text)
 
