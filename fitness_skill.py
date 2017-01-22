@@ -17,8 +17,7 @@ logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 @ask.launch
 def launch():
-    speech_text = render_template('welcome')
-    return question(speech_text).reprompt(speech_text)
+    return welcome_and_help()
 
 
 @ask.intent('StartWorkoutIntent')
@@ -30,16 +29,22 @@ def hello_world():
     return statement(speech_text).simple_card('HelloWorld', speech_text)
 
 
-@ask.intent('AMAZON.HelpIntent')
-def help():
-    speech_text = render_template('welcome')
     return question(speech_text).reprompt(speech_text)
+
+
+@ask.intent('AMAZON.HelpIntent')
+def help_():
+    return welcome_and_help()
 
 
 @ask.session_ended
 def session_ended():
     return '', 200
 
+
+def welcome_and_help():
+    speech_text = render_template('welcome')
+    return question(speech_text).reprompt(speech_text)
 
 if __name__ == '__main__':
     app.run(debug=True)
