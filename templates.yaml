@@ -1,0 +1,2 @@
+welcome: Welcome! My name is Alexa, and I will be your personal trainer. To begin, you can simply say "start my workout".
+start: Let's begin! The first exercise is {{ repetitions }} {{ exercise }}. Ready?
