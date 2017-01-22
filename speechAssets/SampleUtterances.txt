@@ -1,3 +1,5 @@
 StartWorkoutIntent start
 StartWorkoutIntent start workout
 StartWorkoutIntent start my workout
+
+CountWithMeIntent {number}

@@ -4,6 +4,15 @@
       "intent": "StartWorkoutIntent"
     },
     {
+      "intent": "CountWithMeIntent",
+      "slots": [
+        {
+          "name": "number",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
       "intent": "AMAZON.YesIntent"
     },
     {
