@@ -2,6 +2,9 @@
   "intents": [
     {
       "intent": "StartWorkoutIntent"
+    },
+    {
+      "intent": "AMAZON.YesIntent"
     }
   ]
 }
