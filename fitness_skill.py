@@ -21,13 +21,21 @@ def launch():
 
 
 @ask.intent('StartWorkoutIntent')
-def hello_world():
-    speech_text = render_template('start')
-    default_workouts = json.load('defaultWorkouts.json')
-    session.attributes['workout'] = default_workouts['default']
-    session.attributes['activity_number'] = 0
-    return statement(speech_text).simple_card('HelloWorld', speech_text)
+def start_workout_intent():
+    ## DEBUG ONLY
+    print 'starting workout'
 
+    with open('defaultWorkouts.json') as fp:
+        default_workouts = json.load(fp)
+
+    exercises = default_workouts['default']['exercises']
+
+    speech_text = render_template('startWorkout',
+                                  activity=exercises[0]['activity'],
+                                  repetitions=exercises[0]['repititions'])
+
+    session.attributes['workout'] = exercises
+    session.attributes['activity_number'] = 1
 
     return question(speech_text).reprompt(speech_text)
 
@@ -45,6 +53,25 @@ def session_ended():
 def welcome_and_help():
     speech_text = render_template('welcome')
     return question(speech_text).reprompt(speech_text)
+
+def next_exercise():
+    workout = session.attributes.get('workout')
+    activity_number = session.attributes.get('activity_number')
+
+    if workout is not None and activity_number is not None:
+        try:
+            exercise = workout[activity_number]
+        except IndexError:
+            speech_text = render_template('completedWorkout')
+            return statement(speech_text)
+        else:
+            speech_text = render_template('nextExercise',
+                                          activity=exercise['activity'],
+                                          repetitions=exercise['repititions'])
+            return question(speech_text).reprompt(speech_text)
+
+    else:
+        return welcome_and_help()
 
 if __name__ == '__main__':
     app.run(debug=True)
