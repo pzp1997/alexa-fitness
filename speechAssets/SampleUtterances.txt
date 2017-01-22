@@ -3,3 +3,8 @@ StartWorkoutIntent start workout
 StartWorkoutIntent start my workout
 
 CountWithMeIntent {number}
+
+AMAZON.NextIntent next exercise
+AMAZON.NextIntent next activity
+AMAZON.NextIntent skip exercise
+AMAZON.NextIntent skip activity

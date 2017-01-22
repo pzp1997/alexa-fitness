@@ -98,6 +98,11 @@ def count_with_me_intent(number):
     return question(speech_text).reprompt(speech_text)
 
 
+@ask.intent('AMAZON.NextIntent')
+def skip_exercise():
+    return next_exercise()
+
+
 @ask.intent('AMAZON.HelpIntent')
 def help_():
     return welcome_and_help()
